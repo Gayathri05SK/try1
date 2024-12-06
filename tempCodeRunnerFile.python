@@ -1,0 +1,38 @@
+import numpy as np
+
+def generate_wafer_map(wafer_diameter, die_size, die_shift_vector, cow_to_reference_die):
+    # Calculate the number of dies in x and y directions
+    num_dies_x = int(np.ceil(wafer_diameter / die_size[0]))
+    num_dies_y = int(np.ceil(wafer_diameter / die_size[1]))
+
+    # Initialize arrays to store Die Index and LLC coordinates
+    die_index = []
+    llc_coordinates = []
+
+    # Calculate LLC coordinates for each die
+    for i in range(num_dies_x):
+        for j in range(num_dies_y):
+            die_index.append((i, j))
+
+            # Calculate LLC coordinates taking into account die shift and cow to reference die
+            llc_x = i * die_size[0] + die_shift_vector[0] + cow_to_reference_die[0]
+            llc_y = j * die_size[1] + die_shift_vector[1] + cow_to_reference_die[1]
+
+            llc_coordinates.append((llc_x, llc_y))
+
+    return die_index, llc_coordinates
+
+# Example input parameters
+wafer_diameter = 300  # in mm
+die_size = (30, 30)   # in mm
+die_shift_vector = (0, 0)  # in mm
+cow_to_reference_die = (15, 15)  # in mm
+
+# Generate wafer map
+die_index, llc_coordinates = generate_wafer_map(wafer_diameter, die_size, die_shift_vector, cow_to_reference_die)
+
+# Print the output in the specified format
+f = open("F:\KLA workshop\Workshop2024\Milestone2\\ans\\1.txt" , 'w')
+for index, llc in zip(die_index, llc_coordinates):
+    print(f"{index} : {llc}")
+
